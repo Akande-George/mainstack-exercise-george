@@ -30,7 +30,6 @@ import { Label } from "@/components/ui/label";
 import TransactionData from "@/components/Dashboard/TransactionData";
 import { User, Wallet as WalletType, Transaction } from "@/types/api";
 import Loader from "@/components/ui/loader";
-import LinksContainer from "@/components/Headers/LinksContainer";
 
 export default function Home() {
   const [startOpen, setStartOpen] = useState(false);
@@ -109,6 +108,9 @@ export default function Home() {
     setEndDate(undefined);
     setSelectedItems([]);
     setSelectedStatus([]);
+
+    // Reset filtered data to show all transactions
+    setFilteredTransactionData(transactionData);
   };
 
   const applyFilters = () => {
@@ -212,23 +214,27 @@ export default function Home() {
   }
 
   return (
-    <div className="pt-10">
-      <div className="">
-        <div className="space-y-6 w-[90%]">
-          <div className="grid grid-cols-1 md:grid-cols-7 gap-12">
-            <div className="md:col-span-5 space-y-6 pr-3">
+    <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+      <div className="max-w-7xl mx-auto">
+        <div className="space-y-6">
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-7 gap-6 lg:gap-12">
+            {/* Left Section - Wallet & Chart */}
+            <div className="lg:col-span-5 space-y-6">
               <Wallet walletData={walletData} />
-              <div className="pt-8">
+              <div className="pt-4 lg:pt-8">
                 <TransactionsChart transactionData={filteredTransactionData} />
               </div>
             </div>
-            <div className="md:col-span-2">
-              <div className="">
-                <Ledger walletData={walletData} />
-              </div>
+
+            {/* Right Section - Ledger */}
+            <div className="lg:col-span-2 order-first lg:order-last">
+              <Ledger walletData={walletData} />
             </div>
           </div>
-          <div className="flex justify-between items-center">
+
+          {/* Table Header & Filters */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <TableHeader
               transactionData={transactionData}
               filteredCount={filteredTransactionData?.length}
@@ -239,12 +245,14 @@ export default function Home() {
                 endDate !== undefined
               }
             />
-            <div className="flex justify-end items-center space-x-3">
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
               <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                <SheetTrigger>
+                <SheetTrigger className="w-full sm:w-auto">
                   <Button
-                    className="bg-[#EFF1F6] text-[16px] text-[#131316] rounded-full py-4 font-semibold hover:text-white"
-                    size="xl"
+                    className="bg-[#EFF1F6] text-[14px] sm:text-[16px] text-[#131316] rounded-full py-3 sm:py-4 px-4 sm:px-6 font-semibold hover:text-white w-full sm:w-auto"
+                    size={undefined}
                   >
                     Filter
                     {(selectedItems.length > 0 ||
@@ -257,23 +265,25 @@ export default function Home() {
                     )}
                     <Image
                       src="/carret-icon-down.svg"
-                      alt="Download"
+                      alt="Filter"
                       width={10.68}
                       height={6.02}
+                      className="ml-2"
                     />
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="m-2 h-[98vh] rounded-[20px]">
+                <SheetContent className="w-full sm:w-[400px] h-full rounded-none sm:rounded-[20px] sm:m-2 sm:h-[98vh]">
                   <SheetHeader>
                     <SheetTitle>
-                      <div className="text-[#131316] text-[24px] font-bold">
+                      <div className="text-[#131316] text-[20px] sm:text-[24px] font-bold">
                         Filter
                       </div>
                     </SheetTitle>
                     <SheetDescription>
-                      <div className="pt-6 space-y-5 h-full flex flex-col">
-                        <div className="flex-1 space-y-5">
-                          <div className="flex justify-start gap-2 items-center overflow-x-auto">
+                      <div className="pt-4 sm:pt-6 space-y-4 sm:space-y-5 h-full flex flex-col">
+                        <div className="flex-1 space-y-4 sm:space-y-5">
+                          {/* Time Cards */}
+                          <div className="flex flex-wrap sm:flex-nowrap justify-start gap-2 items-center overflow-x-auto">
                             <TimeCard
                               time="Today"
                               onClick={() => handleTimeCardClick("Today")}
@@ -287,13 +297,15 @@ export default function Home() {
                               onClick={() => handleTimeCardClick("This month")}
                             />
                           </div>
+
+                          {/* Date Range */}
                           <div>
                             <Label htmlFor="date" className="px-1">
                               <div className="text-[#131316] text-[14px] font-semibold mb-2">
                                 Date Range
                               </div>
                             </Label>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div>
                                 <Popover
                                   open={startOpen}
@@ -301,10 +313,15 @@ export default function Home() {
                                 >
                                   <PopoverTrigger asChild>
                                     <Button className="w-full justify-between h-[48px] font-normal bg-[#EFF1F6] hover:bg-[#EFF1F6] border border-[#EFF1F6] text-[#131316] hover:text-[#131316]">
-                                      {startDate
-                                        ? startDate.toLocaleDateString()
-                                        : "Start date"}
-                                      <ChevronDownIcon color="#31373D" />
+                                      <span className="truncate">
+                                        {startDate
+                                          ? startDate.toLocaleDateString()
+                                          : "Start date"}
+                                      </span>
+                                      <ChevronDownIcon
+                                        color="#31373D"
+                                        className="ml-2 flex-shrink-0"
+                                      />
                                     </Button>
                                   </PopoverTrigger>
                                   <PopoverContent
@@ -333,10 +350,12 @@ export default function Home() {
                                       variant="outline"
                                       className="w-full justify-between font-normal h-[48px] bg-[#EFF1F6] hover:bg-[#EFF1F6] border border-[#EFF1F6] text-[#131316] hover:text-[#131316]"
                                     >
-                                      {endDate
-                                        ? endDate.toLocaleDateString()
-                                        : "End date"}
-                                      <ChevronDownIcon />
+                                      <span className="truncate">
+                                        {endDate
+                                          ? endDate.toLocaleDateString()
+                                          : "End date"}
+                                      </span>
+                                      <ChevronDownIcon className="ml-2 flex-shrink-0" />
                                     </Button>
                                   </PopoverTrigger>
                                   <PopoverContent
@@ -357,6 +376,8 @@ export default function Home() {
                               </div>
                             </div>
                           </div>
+
+                          {/* Transaction Type */}
                           <div>
                             <Label className="px-1">
                               <div className="text-[#131316] text-[14px] font-semibold mb-2">
@@ -376,16 +397,19 @@ export default function Home() {
                                     readOnly
                                     value={selectedItems.join(", ")}
                                     placeholder="Select transaction types"
-                                    className="border-none bg-transparent p-0 h-auto focus-visible:ring-0 cursor-pointer"
+                                    className="border-none bg-transparent p-0 h-auto focus-visible:ring-0 cursor-pointer truncate"
                                   />
-                                  <ChevronDownIcon color="#31373D" />
+                                  <ChevronDownIcon
+                                    color="#31373D"
+                                    className="ml-2 flex-shrink-0"
+                                  />
                                 </Button>
                               </PopoverTrigger>
                               <PopoverContent
-                                className="w-[352px] p-2"
+                                className="w-[300px] sm:w-[352px] p-2"
                                 align="start"
                               >
-                                <div className="p-4 space-y-8">
+                                <div className="p-2 sm:p-4 space-y-4 sm:space-y-8">
                                   {options.map((option) => (
                                     <div
                                       key={option}
@@ -403,7 +427,7 @@ export default function Home() {
                                       />
                                       <Label
                                         htmlFor={option}
-                                        className="text-[16px] font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                        className="text-[14px] sm:text-[16px] font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                                       >
                                         {option}
                                       </Label>
@@ -413,6 +437,8 @@ export default function Home() {
                               </PopoverContent>
                             </Popover>
                           </div>
+
+                          {/* Transaction Status */}
                           <div>
                             <Label className="px-1">
                               <div className="text-[#131316] text-[14px] font-semibold mb-2">
@@ -432,16 +458,19 @@ export default function Home() {
                                     readOnly
                                     value={selectedStatus.join(", ")}
                                     placeholder="Select transaction status"
-                                    className="border-none bg-transparent p-0 h-auto focus-visible:ring-0 cursor-pointer"
+                                    className="border-none bg-transparent p-0 h-auto focus-visible:ring-0 cursor-pointer truncate"
                                   />
-                                  <ChevronDownIcon color="#31373D" />
+                                  <ChevronDownIcon
+                                    color="#31373D"
+                                    className="ml-2 flex-shrink-0"
+                                  />
                                 </Button>
                               </PopoverTrigger>
                               <PopoverContent
-                                className="w-[352px] p-2"
+                                className="w-[300px] sm:w-[352px] p-2"
                                 align="start"
                               >
-                                <div className="p-4 space-y-8">
+                                <div className="p-2 sm:p-4 space-y-4 sm:space-y-8">
                                   {statusOptions.map((option) => (
                                     <div
                                       key={option}
@@ -461,7 +490,7 @@ export default function Home() {
                                       />
                                       <Label
                                         htmlFor={option}
-                                        className="text-[16px] font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                        className="text-[14px] sm:text-[16px] font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                                       >
                                         {option}
                                       </Label>
@@ -472,47 +501,48 @@ export default function Home() {
                             </Popover>
                           </div>
                         </div>
-                        <div className="flex space-x-4 justify-center items-center mt-auto pt-6">
-                          <div>
-                            <Button
-                              variant="outline"
-                              className="text-[#131316] rounded-full py-2 px-4 font-semibold px-16 text-[16px]"
-                              size="xl"
-                              onClick={clearFilters}
-                            >
-                              Clear
-                            </Button>
-                          </div>
-                          <div>
-                            <Button
-                              className="rounded-full py-2 px-4 font-semibold px-16 text-[16px]"
-                              size="xl"
-                              onClick={applyFilters}
-                            >
-                              Apply
-                            </Button>
-                          </div>
+
+                        {/* Filter Actions */}
+                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center items-center mt-auto pt-6">
+                          <Button
+                            variant="outline"
+                            className="text-[#131316] rounded-full py-2 px-8 sm:px-16 font-semibold text-[14px] sm:text-[16px] w-full sm:w-auto"
+                            onClick={clearFilters}
+                          >
+                            Clear
+                          </Button>
+                          <Button
+                            className="rounded-full py-2 px-8 sm:px-16 font-semibold text-[14px] sm:text-[16px] w-full sm:w-auto"
+                            onClick={applyFilters}
+                          >
+                            Apply
+                          </Button>
                         </div>
                       </div>
                     </SheetDescription>
                   </SheetHeader>
                 </SheetContent>
               </Sheet>
+
               <Button
-                className="bg-[#EFF1F6] text-[16px] text-[#131316] rounded-full py-4 font-semibold hover:text-white"
-                size="xl"
+                className="bg-[#EFF1F6] text-[14px] sm:text-[16px] text-[#131316] rounded-full py-3 sm:py-4 px-4 sm:px-6 font-semibold hover:text-white w-full sm:w-auto"
+                size={undefined}
               >
                 Export List
                 <Image
                   src="/download-icon.svg"
                   alt="Download"
-                  width={20}
-                  height={20}
+                  width={16}
+                  height={16}
+                  className="ml-2 w-4 h-4 sm:w-5 sm:h-5"
                 />
               </Button>
             </div>
           </div>
+
           <hr className="border-t border-[#EFF1F6]" />
+
+          {/* Transaction Data */}
           <div>
             <TransactionData
               transactionData={filteredTransactionData}

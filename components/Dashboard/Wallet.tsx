@@ -20,7 +20,7 @@ const Wallet = ({ walletData }: WalletProps) => {
         Available Balance
       </div>
       <div className="flex justify-start items-end gap-16">
-        <div className="font-bold text-[36px]">
+        <div className="font-bold text-[24px] md:text-[36px]">
           {walletData?.currency || "USD"}{" "}
           {formatCurrency(walletData?.balance || 0)}
         </div>
