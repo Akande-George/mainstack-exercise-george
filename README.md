@@ -1,24 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This project is a solution to the Frontend Engineering Exercise by Mainstack.
+It demonstrates my approach to building clean, scalable, and responsive user interfaces with modern frontend technologies.
+
+The goal of this project is to showcase my understanding of component-driven development, state management, API integration, and performance optimization while maintaining high code quality and user experience standards.
 
 ## Getting Started
 
-First, run the development server:
+🛠️ Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Framework: Next.js
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Language: TypeScript / JavaScript
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Styling: Shadcn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+API: Axios
+
+Utilities: React Query / TanStack Query / Custom hooks
 
 ## Learn More
 
