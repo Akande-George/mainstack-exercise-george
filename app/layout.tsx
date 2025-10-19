@@ -28,16 +28,16 @@ export default function RootLayout({
 
           {/* Main Content Area */}
           <div className="pt-[80px]">
-            {" "}
-            {/* Add padding to account for fixed header */}
-            <div className="grid grid-cols-10">
-              {/* Fixed Sidebar */}
-              <div className="col-span-1 fixed left-0 top-[250px] h-[calc(100vh-80px)] w-[100px] flex justify-center items-start pt-10 bg-white z-40">
+            <div className="grid grid-cols-1 lg:grid-cols-10">
+              {/* Fixed Sidebar - Hidden on mobile */}
+              <div className="hidden lg:block lg:col-span-1 fixed left-0 top-[80px] h-[calc(100vh-80px)] w-[50px] flex justify-center items-start pt-36 bg-white z-40 pl-2">
                 <LinksContainer />
               </div>
 
               {/* Main Content */}
-              <div className="col-span-9 col-start-2 pl-4">{children}</div>
+              <div className="lg:col-span-8 lg:col-start-2 lg:pl-4">
+                {children}
+              </div>
             </div>
           </div>
         </div>
